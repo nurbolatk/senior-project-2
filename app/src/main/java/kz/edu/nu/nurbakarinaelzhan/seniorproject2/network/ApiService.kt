@@ -2,9 +2,6 @@ package kz.edu.nu.nurbakarinaelzhan.seniorproject2.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.data.NewUser
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.data.User
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.data.UserCredential
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,8 +10,10 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-//private const val BASE_URL = "http://138.68.86.48/"
-private const val BASE_URL = "http://192.168.43.92:4000/"
+private const val BASE_URL = "http://192.168.43.92:4000/" // 4G
+//private const val BASE_URL = "http://192.168.1.178:4000/" // home
+//private const val BASE_URL = "http://10.194.173.151:4000/" // jysan
+//private const val BASE_URL = "http://138.68.86.48/" // remote
 
 fun createRetrofit(): Retrofit {
     val interceptor = HttpLoggingInterceptor()
@@ -42,10 +41,10 @@ interface ApiService {
      */
 
     @POST("login")
-    suspend fun login(@Body credentials: UserCredential): User
+    suspend fun login(@Body credentials: UserCredentials): NetworkUser
 
     @POST("register")
-    suspend fun register(@Body user: NewUser): User
+    suspend fun register(@Body user: NewUser): NetworkUser
 }
 
 object Api {

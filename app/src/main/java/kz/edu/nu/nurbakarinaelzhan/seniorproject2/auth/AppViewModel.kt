@@ -1,40 +1,33 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth
 
-import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.db.getDatabase
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.Api
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.NewUser
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.UserCredentials
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.repository.AppRepository
 import timber.log.Timber
+import javax.inject.Inject
 
-enum class ApiStatus {
-    INIT,
-    LOADING,
-    ERROR,
-    DONE
-}
+@HiltViewModel
+class AppViewModel
+@Inject constructor(
+    val randomString: String,
+    private val repository: AppRepository
+): ViewModel() {
 
+    val currentUser = repository.currentUser
 
-class AuthViewModel constructor(
-    private val app: Application
-) : AndroidViewModel(app) {
-
-    private val repository = AppRepository(getDatabase(getApplication()))
-
-    var currentUser = repository.currentUser
-    var status by mutableStateOf(ApiStatus.INIT)
-
-    private var id: Int = (100..999).random()
     init {
-        Timber.d("Ma Id is $id")
+        Timber.d("$randomString ${(100..999).random()}")
     }
+
+    var status by mutableStateOf(ApiStatus.INIT)
 
     fun login(credentials: UserCredentials) {
         viewModelScope.launch {

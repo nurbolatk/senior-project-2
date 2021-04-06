@@ -8,13 +8,16 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AuthViewModel
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.HomeScreen
+import timber.log.Timber
 
 
 sealed class Screen(val route: String, val name: String, val icon: ImageVector) {
@@ -28,7 +31,16 @@ val items = listOf(
 )
 
 @Composable
-fun AppWrapper(viewModel: AuthViewModel) {
+fun AppWrapper(higherNavController: NavHostController, viewModel: AppViewModel = viewModel()) {
+
+    val currentUser by viewModel.currentUser.observeAsState()
+    Timber.d(if(currentUser == null) "current user null" else "currentuser ${currentUser!!.email}")
+    if(currentUser == null) {
+        higherNavController.navigate("login") {
+            popUpTo("app") { inclusive = true }
+        }
+    }
+
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -57,7 +69,10 @@ fun AppWrapper(viewModel: AuthViewModel) {
             }
         }
     ) { innerPadding ->
-        Column(Modifier.padding(8.dp).padding(innerPadding)) {
+        Column(
+            Modifier
+                .padding(8.dp)
+                .padding(innerPadding)) {
             HomeNavController(navController)
         }
     }
