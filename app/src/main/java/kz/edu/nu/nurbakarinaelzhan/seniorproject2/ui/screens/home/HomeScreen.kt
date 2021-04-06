@@ -13,6 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.SurveyScreen
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.DarkBlue700
+import java.util.*
 
 @Composable
 fun HomeScreen(viewModel: AppViewModel) {
@@ -39,24 +42,20 @@ fun HomeScreen(viewModel: AppViewModel) {
             ) {
                 Icon(
                     Icons.Filled.Logout,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = DarkBlue700
                 )
             }
         }
-//        Column(modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(horizontal = 8.dp)
-//        ) {
-            Button(
+        SurveyScreen()
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .fillMaxWidth(),
+        ) {
+            Text("Take a survey".toUpperCase(Locale.ROOT), style = typography.button)
+        }
 
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth(),
-
-            ) {
-                Text("Take a survey", style = typography.button)
-            }
-//        }
     }
 }

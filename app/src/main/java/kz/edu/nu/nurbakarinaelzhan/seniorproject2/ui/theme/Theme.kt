@@ -24,8 +24,8 @@ val MyTypography = Typography(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = DarkBlue,
+    primaryVariant = DarkBlue700,
     secondary = Teal200,
     background = Color.White,
     surface = Color.White,
