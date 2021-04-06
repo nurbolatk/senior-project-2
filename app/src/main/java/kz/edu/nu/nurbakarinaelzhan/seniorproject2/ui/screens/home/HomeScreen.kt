@@ -1,27 +1,62 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AuthViewModel
+import androidx.compose.ui.unit.dp
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 
 @Composable
-fun HomeScreen() {
-    val viewModel = viewModel<AuthViewModel>()
+fun HomeScreen(viewModel: AppViewModel) {
+    val currentUser = viewModel.currentUser.value
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 24.dp, bottom = 12.dp),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text("Welcome to home screen")
-        Button(
-            onClick = {
-                viewModel.logout()
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Log Out")
+            Text(
+                if(currentUser != null) "Welcome, ${currentUser.name}" else "Good bye!",
+                style = typography.h5
+            )
+            IconButton(
+                onClick = {
+                    viewModel.logout()
+                }
+            ) {
+                Icon(
+                    Icons.Filled.Logout,
+                    contentDescription = null
+                )
+            }
         }
+//        Column(modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 8.dp)
+//        ) {
+            Button(
+
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(),
+
+            ) {
+                Text("Take a survey", style = typography.button)
+            }
+//        }
     }
 }

@@ -1,8 +1,9 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Timeline
@@ -10,11 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.popUpTo
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.HomeScreen
 import timber.log.Timber
@@ -41,48 +44,15 @@ fun AppWrapper(higherNavController: NavHostController, viewModel: AppViewModel =
         }
     }
 
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
-                items.forEach { screen ->
-                    BottomNavigationItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
-                        label = { Text(screen.name) },
-                        selected = currentRoute == screen.route,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo = navController.graph.startDestination
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                            }
-                        }
-                    )
-                }
 
-            }
-        }
-    ) { innerPadding ->
-        Column(
-            Modifier
-                .padding(8.dp)
-                .padding(innerPadding)) {
-            HomeNavController(navController)
-        }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(8.dp)
+    ) {
+        HomeScreen(viewModel)
     }
+
 }
 
-
-@Composable
-fun HomeNavController(navController: NavHostController) {
-    NavHost(navController, "home") {
-        composable("home") { HomeScreen() }
-        composable("history") { HistoryScreen() }
-    }
-}
