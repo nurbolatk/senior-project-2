@@ -7,12 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.Api
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.ApiStatus
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.NewUser
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.UserCredentials
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.repository.AppRepository
 import timber.log.Timber
 import javax.inject.Inject
+
+
+
 
 @HiltViewModel
 class AppViewModel
@@ -22,38 +25,24 @@ class AppViewModel
 ): ViewModel() {
 
     val currentUser = repository.currentUser
+    val predictions = repository.predictions
 
     init {
         Timber.d("$randomString ${(100..999).random()}")
+        repository.createNotificationChannel()
     }
 
-    var status by mutableStateOf(ApiStatus.INIT)
+    var status by mutableStateOf(ApiStatus.IDLE)
 
     fun login(credentials: UserCredentials) {
         viewModelScope.launch {
-            status = ApiStatus.LOADING
-            try {
-                val receivedUser = Api.backend.login(credentials)
-                repository.insertUser(receivedUser)
-                status = ApiStatus.DONE
-            } catch(e: Exception) {
-                Timber.e(e)
-                status = ApiStatus.ERROR
-            }
+            repository.login(credentials)
         }
     }
 
     fun register(user: NewUser) {
         viewModelScope.launch {
-            status = ApiStatus.LOADING
-            try {
-                val receivedUser = Api.backend.register(user)
-                repository.insertUser(receivedUser)
-                status = ApiStatus.DONE
-            } catch(e: Exception) {
-                Timber.e(e)
-                status = ApiStatus.ERROR
-            }
+            repository.register(user)
         }
     }
 
@@ -62,8 +51,31 @@ class AppViewModel
             try {
                 repository.logout()
             } catch (e: Exception) {
-
+                Timber.e(e)
             }
         }
     }
+
+    val symptomsStatus = repository.symptomsStatus
+
+    fun sendSymptoms(symptomsMap: Map<String, Int>) {
+        viewModelScope.launch {
+            repository.sendSymptoms(symptomsMap)
+        }
+    }
+
+    fun resetSymptomsStatus() {
+        symptomsStatus.value = ApiStatus.IDLE
+    }
+
+    fun fetchPrediction() {
+        currentUser.value?.let {
+            viewModelScope.launch {
+                repository.fetchPrediction(it.id)
+            }
+        }
+    }
+
+
+
 }

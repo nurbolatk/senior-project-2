@@ -1,7 +1,6 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme.typography
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -24,6 +22,7 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.UserCredentials
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.components.EmailField
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.components.PasswordField
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.components.TextButton
 import timber.log.Timber
 
 @Composable
@@ -74,12 +73,9 @@ fun LoginScreen(navController: NavController, viewModel:AppViewModel = androidx.
             }
 
             Spacer(Modifier.height((64.dp)))
-            Text(
-                "Create account",
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    navController.navigate("register")
-                }
+            TextButton(
+                text = "Create account",
+                onClick = { navController.navigate("register") }
             )
         }
     }

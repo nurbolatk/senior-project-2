@@ -1,6 +1,5 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.db
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -22,23 +21,27 @@ interface UserDao {
     fun getCurrentUser(): LiveData<DBUser>
 }
 
-@Database(entities = [DBUser::class], version = 1)
+@Dao
+interface PredictionsDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertWithoutTimestamp(data: DBPrediction)
+
+    fun insert(data: DBPrediction) {
+        insertWithoutTimestamp(data.apply{
+            createdAt = System.currentTimeMillis()
+        })
+    }
+
+    @Query("select * from predictions")
+    fun getAll(): LiveData<List<DBPrediction>>
+
+    @Query("delete from predictions")
+    fun deleteAll()
+}
+
+@Database(entities = [DBUser::class, DBPrediction::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun predictionsDao(): PredictionsDao
 }
 
-private lateinit var INSTANCE: AppDatabase
-
-fun getDatabase(context: Context): AppDatabase {
-    synchronized(AppDatabase::class.java) {
-        if(!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                "app_db"
-            ).fallbackToDestructiveMigration()
-                .build()
-        }
-    }
-    return INSTANCE
-}

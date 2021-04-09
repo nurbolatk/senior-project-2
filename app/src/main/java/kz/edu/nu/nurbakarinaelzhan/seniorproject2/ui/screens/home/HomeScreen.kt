@@ -12,18 +12,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.SurveyScreen
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.Predictions
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.DarkBlue700
 import java.util.*
 
 @Composable
-fun HomeScreen(viewModel: AppViewModel) {
+fun HomeScreen(navController: NavHostController, viewModel: AppViewModel) {
     val currentUser = viewModel.currentUser.value
+    viewModel.fetchPrediction()
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp, bottom = 12.dp),
+            .padding(top = 24.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
@@ -47,11 +52,15 @@ fun HomeScreen(viewModel: AppViewModel) {
                 )
             }
         }
-        SurveyScreen()
+
+        Predictions(viewModel)
+
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate("survey")
+            },
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
         ) {
             Text("Take a survey".toUpperCase(Locale.ROOT), style = typography.button)

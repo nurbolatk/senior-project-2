@@ -7,12 +7,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 
-private const val BASE_URL = "http://192.168.43.92:4000/" // 4G
+//private const val BASE_URL = "http://192.168.43.92:4000/" // 4G
+private const val BASE_URL = "http://192.168.42.43:4000/" // 4G
 //private const val BASE_URL = "http://192.168.1.178:4000/" // home
-//private const val BASE_URL = "http://10.194.173.151:4000/" // jysan
+//private const val BASE_URL = "http://10.194.173.35:4000/" // jysan
 //private const val BASE_URL = "http://138.68.86.48/" // remote
 
 fun createRetrofit(): Retrofit {
@@ -45,8 +48,14 @@ interface ApiService {
 
     @POST("register")
     suspend fun register(@Body user: NewUser): NetworkUser
+
+    @POST("symptoms")
+    suspend fun sendSymptoms(@Body symptomsPayload: SymptomsPayload)
+
+    @GET("isPredictionReady")
+    suspend fun getPrediction(@Query("id") id: String): PredictionGet
 }
 
-object Api {
-    val backend : ApiService by lazy { createRetrofit().create(ApiService::class.java) }
+enum class ApiStatus {
+    IDLE, LOADING, SUCCESS, ERROR
 }

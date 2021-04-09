@@ -51,7 +51,7 @@ fun AppWrapper(higherNavController: NavHostController, viewModel: AppViewModel =
             .background(Color.White)
             .padding(8.dp)
     ) {
-        HomeScreen(viewModel)
+        HomeScreen(higherNavController, viewModel)
     }
 
 }

@@ -9,6 +9,7 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.LoginScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.auth.RegisterScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.AppWrapper
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.SurveyScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.SeniorProject2Theme
 
 @Composable
@@ -31,6 +32,9 @@ fun MainNavController() {
         }
         composable("app") {
             AppWrapper(navController, viewModel)
+        }
+        composable("survey") {
+            SurveyScreen(viewModel, navController)
         }
     }
 }

@@ -1,5 +1,6 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.db
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.domain.User
@@ -19,3 +20,10 @@ data class DBUser(
             email, gender, age
         )
 }
+
+@Entity(tableName = "predictions")
+data class DBPrediction(
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    @ColumnInfo(name = "created_at") var createdAt: Long? = null,
+    val value: Int
+)

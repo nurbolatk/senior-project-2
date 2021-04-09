@@ -103,7 +103,7 @@ fun RegisterScreen(navController: NavController, viewModel: AppViewModel = viewM
                 Column(
                     modifier = Modifier
                         .weight(2f)
-                        .padding(start = 24.dp)
+                        .padding(start = 20.dp)
                 ) {
                     Text("Gender")
                     Spacer(Modifier.height(6.dp))

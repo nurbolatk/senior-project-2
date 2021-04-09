@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.DarkBlue
 
 
 @Composable
@@ -59,7 +61,8 @@ fun MaOwnRadioGroup(selected: String, setSelected: (String) -> Unit, options: Li
             ) {
                 RadioButton(
                     selected = selected === opt,
-                    onClick = { setSelected(opt) }
+                    onClick = { setSelected(opt) },
+                    colors = RadioButtonDefaults.colors(selectedColor = DarkBlue)
                 )
                 Text(
                     opt,
@@ -70,4 +73,15 @@ fun MaOwnRadioGroup(selected: String, setSelected: (String) -> Unit, options: Li
             }
         }
     }
+}
+
+@Composable
+fun TextButton(text: String, onClick: () -> Unit) {
+    Text(
+        text = text,
+        textDecoration = TextDecoration.Underline,
+        modifier = Modifier.clickable {
+            onClick()
+        }
+    )
 }
