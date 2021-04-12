@@ -57,13 +57,13 @@ fun HomeScreen(navController: NavHostController, viewModel: AppViewModel) {
 
         Button(
             onClick = {
-                navController.navigate("survey")
+                navController.navigate("prediction_status")
             },
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
         ) {
-            Text("Take a survey".toUpperCase(Locale.ROOT), style = typography.button)
+            Text("Check prediction".toUpperCase(Locale.ROOT), style = typography.button)
         }
 
     }

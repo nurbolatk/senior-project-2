@@ -76,3 +76,63 @@ data class PredictionGet(
         value = value
     )
 }
+
+data class SensorSymptom(
+    val value: Int? = null,
+    val percents: Int? = null
+)
+data class PulseoximeterSensor(
+    val value: Int? = null,
+    val fatigue: SensorSymptom? = null
+)
+
+data class ThermometerSensor(
+    val value: Int? = null,
+    val fever: SensorSymptom? = null
+)
+
+data class SpirometerSensor(
+    val value: Int? = null,
+    val pneumonia: Int? = null,
+    val difficult_breathing: Int? = null
+)
+
+data class SurveyStatus(
+    val covid_infected: SensorSymptom? = null,
+    val submitted: Boolean? = null,
+    val sputum: Int? = null,
+    val muscle_pain: Int? = null,
+    val sore_throat: Int? = null,
+    val pneumonia: Int? = null,
+    val cold: Int? = null,
+    val fever: Int? = null,
+    val sneeze: Int? = null,
+    val reflux: Int? = null,
+    val diarrhea: Int? = null,
+    val runny_nose: Int? = null,
+    val difficult_breathing: Int? = null,
+    val chest_pain: Int? = null,
+    val cough: Int? = null,
+    val joint_pain: Int? = null,
+    val fatigue: Int? = null,
+    val flu: Int? = null,
+    val headache: Int? = null,
+    val vomiting: Int? = null,
+    val loss_appetite: Int? = null,
+    val chills: Int? = null,
+    val nausea: Int? = null,
+    val physical_discomfort: Int? = null,
+    val abdominal_pain: Int? = null,
+    val _id: String? = null,
+    val _userID: String? = null,
+)
+data class SensorsStatus(
+    val pulseoximeter: PulseoximeterSensor? = null,
+    val thermometer: ThermometerSensor? = null,
+    val spirometer: SpirometerSensor? = null,
+)
+
+data class PredictionStatus(
+    val sensors: SensorsStatus? = null,
+    val survey: SurveyStatus? = null
+)

@@ -76,6 +76,15 @@ class AppViewModel
         }
     }
 
+    val statusStatus = repository.statusStatus
+    val predictionStatus = repository.predictionStatus
+    fun fetchStatus() {
+        currentUser.value?.let{
+            viewModelScope.launch {
+                repository.fetchStatus(it.id)
+            }
+        }
+    }
 
 
 }

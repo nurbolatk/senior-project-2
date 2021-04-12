@@ -33,32 +33,32 @@ import java.util.*
 
 
 @Composable
-fun SurveyScreen(viewModel: AppViewModel, navController: NavHostController) {
+fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel) {
     val (survey, setSurvey) = remember { mutableStateOf(
         mutableMapOf<String, Int>(
-            "sputum" to 0,
-            "muscle_pain" to 0,
-            "sore_throat" to 0,
-            "pneumonia" to 0,
-            "cold" to 0,
-            "fever" to 0,
-            "sneeze" to 0,
-            "reflux" to 0,
-            "diarrhea" to 0,
-            "runny_nose" to 0,
-            "difficult_breathing" to 0,
-            "chest_pain" to 0,
-            "cough" to 0,
-            "joint_pain" to 0,
-            "fatigue" to 0,
-            "flu" to 0,
-            "headache" to 0,
-            "vomiting" to 0,
-            "loss_appetite" to 0,
-            "chills" to 0,
-            "nausea" to 0,
-            "physical_discomfort" to 0,
-            "abdominal_pain" to 0,
+            "sputum" to 2,
+            "muscle_pain" to 2,
+            "sore_throat" to 2,
+            "pneumonia" to 2,
+            "cold" to 2,
+            "fever" to 2,
+            "sneeze" to 2,
+            "reflux" to 2,
+            "diarrhea" to 2,
+            "runny_nose" to 2,
+            "difficult_breathing" to 2,
+            "chest_pain" to 2,
+            "cough" to 2,
+            "joint_pain" to 2,
+            "fatigue" to 2,
+            "flu" to 2,
+            "headache" to 2,
+            "vomiting" to 2,
+            "loss_appetite" to 2,
+            "chills" to 2,
+            "nausea" to 2,
+            "physical_discomfort" to 2,
+            "abdominal_pain" to 2,
         )
     )}
 
@@ -70,8 +70,7 @@ fun SurveyScreen(viewModel: AppViewModel, navController: NavHostController) {
 
     Column(
         modifier = Modifier
-            .background(Color.White)
-            .padding(top = 24.dp, bottom = 16.dp)
+            .padding(top = 16.dp, bottom = 8.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
             Text("Indicate symptoms you were experiencing lately", style = typography.h5)
@@ -91,10 +90,10 @@ fun SurveyScreen(viewModel: AppViewModel, navController: NavHostController) {
                             onClick = {
                                 val copy = mutableMapOf<String, Int>()
                                 copy.putAll(survey)
-                                if(it == 0) {
+                                if(it == 2) {
                                     copy[topic[0]] = 1
                                 } else {
-                                    copy[topic[0]] = 0
+                                    copy[topic[0]] = 2
                                 }
                                 setSurvey(copy)
                             },

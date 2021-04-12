@@ -11,8 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-
-//private const val BASE_URL = "http://192.168.43.92:4000/" // 4G
 private const val BASE_URL = "http://192.168.42.43:4000/" // 4G
 //private const val BASE_URL = "http://192.168.1.178:4000/" // home
 //private const val BASE_URL = "http://10.194.173.35:4000/" // jysan
@@ -54,6 +52,9 @@ interface ApiService {
 
     @GET("isPredictionReady")
     suspend fun getPrediction(@Query("id") id: String): PredictionGet
+
+    @GET("getHealthInfo")
+    suspend fun getStatus(@Query("id") id: String): PredictionStatus
 }
 
 enum class ApiStatus {

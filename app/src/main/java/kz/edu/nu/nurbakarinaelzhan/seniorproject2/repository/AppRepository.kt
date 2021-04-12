@@ -162,4 +162,19 @@ class AppRepository
         }
     }
 
+    val statusStatus = MutableLiveData(ApiStatus.IDLE)
+    val predictionStatus = MutableLiveData<PredictionStatus>(null)
+    suspend fun fetchStatus(id: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                statusStatus.postValue(ApiStatus.LOADING)
+                val gotStatus = service.getStatus(id)
+                predictionStatus.postValue(gotStatus)
+                statusStatus.postValue(ApiStatus.SUCCESS)
+            } catch(e: Exception) {
+                statusStatus.postValue(ApiStatus.ERROR)
+            }
+        }
+    }
+
 }
