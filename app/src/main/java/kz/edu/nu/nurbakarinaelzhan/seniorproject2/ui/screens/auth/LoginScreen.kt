@@ -54,7 +54,7 @@ fun LoginScreen(navController: NavController, viewModel:AppViewModel = androidx.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 44.dp),
+                .padding(horizontal = 36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Please, log in", style = typography.h4)

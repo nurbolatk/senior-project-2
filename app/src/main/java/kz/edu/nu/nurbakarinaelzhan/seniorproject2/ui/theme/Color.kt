@@ -9,3 +9,4 @@ val Teal200 = Color(0xFF03DAC5)
 val CoolPurple = Color(0xFFC287E8)
 val DarkBlue = Color(0xFF353A47)
 val DarkBlue700 = Color(0xFF2B303B)
+val MintLeaf = Color(0xFF00b894);

@@ -71,7 +71,7 @@ fun RegisterScreen(navController: NavController, viewModel: AppViewModel = viewM
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 44.dp),
+                .padding(horizontal = 36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Registration", style = typography.h4)

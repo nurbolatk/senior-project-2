@@ -26,14 +26,13 @@ val MyTypography = Typography(
 private val LightColorPalette = lightColors(
     primary = DarkBlue,
     primaryVariant = DarkBlue700,
-    secondary = Teal200,
+    secondary = MintLeaf,
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-
 )
 
 @Composable

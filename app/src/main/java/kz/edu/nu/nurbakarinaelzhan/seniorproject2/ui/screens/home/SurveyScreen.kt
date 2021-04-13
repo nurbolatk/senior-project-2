@@ -108,7 +108,7 @@ fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel) {
               viewModel.sendSymptoms(survey)
             },
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
             enabled = status.value != ApiStatus.LOADING
         ) {
