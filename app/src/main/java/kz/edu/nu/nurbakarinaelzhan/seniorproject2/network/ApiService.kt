@@ -11,8 +11,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-private const val BASE_URL = "http://192.168.42.43:4000/" // 4G
-//private const val BASE_URL = "http://192.168.1.178:4000/" // home
+//private const val BASE_URL = "http://192.168.42.43:4000/" // 4G
+private const val BASE_URL = "http://192.168.1.178:4000/" // home
 //private const val BASE_URL = "http://10.194.173.35:4000/" // jysan
 //private const val BASE_URL = "http://138.68.86.48/" // remote
 

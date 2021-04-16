@@ -164,15 +164,17 @@ class AppRepository
 
     val statusStatus = MutableLiveData(ApiStatus.IDLE)
     val predictionStatus = MutableLiveData<PredictionStatus>(null)
+    
     suspend fun fetchStatus(id: String) {
         withContext(Dispatchers.IO) {
             try {
-                statusStatus.postValue(ApiStatus.LOADING)
+                Timber.d("aloha start status fetching")
                 val gotStatus = service.getStatus(id)
+                Timber.d("aloha end status fetching")
+                Timber.d("aloha ${gotStatus}")
                 predictionStatus.postValue(gotStatus)
-                statusStatus.postValue(ApiStatus.SUCCESS)
             } catch(e: Exception) {
-                statusStatus.postValue(ApiStatus.ERROR)
+                Timber.e(e)
             }
         }
     }

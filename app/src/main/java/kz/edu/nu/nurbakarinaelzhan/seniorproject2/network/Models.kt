@@ -87,12 +87,12 @@ data class PulseoximeterSensor(
 )
 
 data class ThermometerSensor(
-    val value: Int? = null,
+    val value: Double? = null,
     val fever: SensorSymptom? = null
 )
 
 data class SpirometerSensor(
-    val value: Int? = null,
+    val value: Double? = null,
     val pneumonia: Int? = null,
     val difficult_breathing: Int? = null
 )
@@ -125,7 +125,35 @@ data class SurveyStatus(
     val abdominal_pain: Int? = null,
     val _id: String? = null,
     val _userID: String? = null,
-)
+) {
+    fun getSymptoms(): Map<String, Int> {
+        val map = mutableMapOf<String, Int>()
+        map["sputum"] = sputum ?: 0
+        map["muscle_pain"] = muscle_pain ?: 0
+        map["sore_throat"] = sore_throat ?: 0
+        map["pneumonia"] = pneumonia ?: 0
+        map["cold"] = cold ?: 0
+        map["fever"] = fever ?: 0
+        map["sneeze"] = sneeze ?: 0
+        map["reflux"] = reflux ?: 0
+        map["diarrhea"] = diarrhea ?: 0
+        map["runny_nose"] = runny_nose ?: 0
+        map["difficult_breathing"] = difficult_breathing ?: 0
+        map["chest_pain"] = chest_pain ?: 0
+        map["cough"] = cough ?: 0
+        map["joint_pain"] = joint_pain ?: 0
+        map["fatigue"] = fatigue ?: 0
+        map["flu"] = flu ?: 0
+        map["headache"] = headache ?: 0
+        map["vomiting"] = vomiting ?: 0
+        map["loss_appetite"] = loss_appetite ?: 0
+        map["chills"] = chills ?: 0
+        map["nausea"] = nausea ?: 0
+        map["physical_discomfort"] = physical_discomfort ?: 0
+        map["abdominal_pain"] = abdominal_pain ?: 0
+        return map
+    }
+}
 data class SensorsStatus(
     val pulseoximeter: PulseoximeterSensor? = null,
     val thermometer: ThermometerSensor? = null,
@@ -136,3 +164,21 @@ data class PredictionStatus(
     val sensors: SensorsStatus? = null,
     val survey: SurveyStatus? = null
 )
+
+
+enum class Status {
+    SUCCESS,
+    ERROR,
+    LOADING
+}
+
+data class Resource<out T>(val status: Status,val data: T?,val message: String?) {
+
+    companion object{
+        fun<T> success(data:T):Resource<T> = Resource(status= Status.SUCCESS,data = data,message = null)
+        fun<T> error(data:T?,message: String?):Resource<T> = Resource(status= Status.ERROR,data = data,message = message)
+        fun<T> loading(data:T?):Resource<T> = Resource(status= Status.LOADING,data = data,message = null)
+    }
+
+
+}

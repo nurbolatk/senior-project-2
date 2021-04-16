@@ -9,8 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.LoginScreen
@@ -50,8 +52,11 @@ fun MainNavController() {
             composable("prediction_status") {
                 PredictionStatusScreen(navController, viewModel)
             }
-            composable("survey") {
-                SurveyScreen(navController, viewModel)
+            composable(
+                "survey?readonly={readonly}",
+                arguments = listOf(navArgument("readonly") { type = NavType.BoolType; defaultValue = false})
+            ) { navBackStackEntry ->
+                SurveyScreen(navController, viewModel, navBackStackEntry.arguments?.getBoolean("readonly"))
             }
         }
     }

@@ -31,51 +31,90 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.components.StaggeredGrid
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.DarkBlue
 import java.util.*
 
+val map = mutableMapOf<String, Int>(
+    "sputum" to 2,
+    "muscle_pain" to 2,
+    "sore_throat" to 2,
+    "cold" to 2,
+    "sneeze" to 2,
+    "reflux" to 2,
+    "diarrhea" to 2,
+    "runny_nose" to 2,
+    "chest_pain" to 2,
+    "cough" to 2,
+    "joint_pain" to 2,
+    "flu" to 2,
+    "headache" to 2,
+    "vomiting" to 2,
+    "loss_appetite" to 2,
+    "chills" to 2,
+    "nausea" to 2,
+    "physical_discomfort" to 2,
+    "abdominal_pain" to 2,
+)
 
 @Composable
-fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel) {
-    val (survey, setSurvey) = remember { mutableStateOf(
-        mutableMapOf<String, Int>(
-            "sputum" to 2,
-            "muscle_pain" to 2,
-            "sore_throat" to 2,
-            "pneumonia" to 2,
-            "cold" to 2,
-            "fever" to 2,
-            "sneeze" to 2,
-            "reflux" to 2,
-            "diarrhea" to 2,
-            "runny_nose" to 2,
-            "difficult_breathing" to 2,
-            "chest_pain" to 2,
-            "cough" to 2,
-            "joint_pain" to 2,
-            "fatigue" to 2,
-            "flu" to 2,
-            "headache" to 2,
-            "vomiting" to 2,
-            "loss_appetite" to 2,
-            "chills" to 2,
-            "nausea" to 2,
-            "physical_discomfort" to 2,
-            "abdominal_pain" to 2,
-        )
-    )}
+fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel, readonly: Boolean?) {
 
-    val status = viewModel.symptomsStatus.observeAsState()
-    if(status.value == ApiStatus.SUCCESS) {
-        navController.popBackStack()
-        viewModel.resetSymptomsStatus()
+    if (readonly != null && readonly) {
+        val predictionStatus = viewModel.predictionStatus.observeAsState()
+        val surveyStatus = predictionStatus.value?.survey
+        surveyStatus?.let { ss ->
+            val survey = ss.getSymptoms()
+            SurveyScreenUI(survey, readonly, null, null)
+        }
+    } else {
+        val (survey, setSurvey) = remember { mutableStateOf(map) }
+
+        val status = viewModel.symptomsStatus.observeAsState()
+        if (status.value == ApiStatus.SUCCESS) {
+            navController.popBackStack()
+            viewModel.resetSymptomsStatus()
+        }
+
+        SurveyScreenUI(survey = survey, setSurvey = setSurvey) {
+            Button(
+                onClick = {
+                    viewModel.sendSymptoms(survey)
+                },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(),
+                enabled = status.value != ApiStatus.LOADING
+            ) {
+                Text("Submit".toUpperCase(Locale.ROOT))
+            }
+        }
     }
+}
 
+@Composable
+fun SurveyScreenUI(
+    survey: Map<String, Int>,
+    readonly: Boolean = false,
+    setSurvey: ((MutableMap<String, Int>) -> Unit)?,
+    button: (@Composable () -> Unit)?
+) {
     Column(
         modifier = Modifier
             .padding(top = 16.dp, bottom = 8.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
-            Text("Indicate symptoms you were experiencing lately", style = typography.h5)
+            Text(
+                if(readonly)
+                    "Symptoms you were experiencing lately"
+                else
+                    "Indicate symptoms you were experiencing lately",
+                style = typography.h5
+            )
             Spacer(modifier = Modifier.height(2.dp))
-            Text("Check all that apply", style = typography.body1)
+            Text(
+                if(readonly)
+                    "Your previous survey"
+                else
+                    "Check all that apply",
+                style = typography.body1
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
         Row(
@@ -88,14 +127,16 @@ fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel) {
                             modifier = Modifier.padding(8.dp),
                             text = topic[1],
                             onClick = {
-                                val copy = mutableMapOf<String, Int>()
-                                copy.putAll(survey)
-                                if(it == 2) {
-                                    copy[topic[0]] = 1
-                                } else {
-                                    copy[topic[0]] = 2
+                                if (!readonly) {
+                                    val copy = mutableMapOf<String, Int>()
+                                    copy.putAll(survey)
+                                    if (it == 2) {
+                                        copy[topic[0]] = 1
+                                    } else {
+                                        copy[topic[0]] = 2
+                                    }
+                                    setSurvey?.invoke(copy)
                                 }
-                                setSurvey(copy)
                             },
                             state = it
                         )
@@ -103,17 +144,7 @@ fun SurveyScreen(navController: NavHostController, viewModel: AppViewModel) {
                 }
             }
         }
-        Button(
-            onClick = {
-              viewModel.sendSymptoms(survey)
-            },
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .fillMaxWidth(),
-            enabled = status.value != ApiStatus.LOADING
-        ) {
-            Text("Submit".toUpperCase(Locale.ROOT))
-        }
+        button?.invoke()
     }
 }
 
@@ -132,7 +163,8 @@ val ChipStyles = hashMapOf<String, Any>(
 
 @Composable
 fun Chip(modifier: Modifier = Modifier, text: String, onClick: () -> Unit, state: Int) {
-    val styles: Map<*, *> = if (state == 1) ChipStyles["filled"] as Map<*, *> else ChipStyles["outlined"] as Map<*, *>
+    val styles: Map<*, *> =
+        if (state == 1) ChipStyles["filled"] as Map<*, *> else ChipStyles["outlined"] as Map<*, *>
     val backgroundColor by animateColorAsState(styles["bg"] as Color)
 
     Card(
@@ -162,18 +194,14 @@ val topics = listOf(
     listOf("sputum", "Sputum"),
     listOf("muscle_pain", "Muscle pain"),
     listOf("sore_throat", "Sore throat"),
-    listOf("pneumonia", "Pneumonia"),
     listOf("cold", "Cold"),
-    listOf("fever", "Fever"),
     listOf("sneeze", "Sneeze"),
     listOf("reflux", "Reflux"),
     listOf("diarrhea", "Diarrhea"),
     listOf("runny_nose", "Runny nose"),
-    listOf("difficult_breathing", "Difficult breathing"),
     listOf("chest_pain", "Chest pain"),
     listOf("cough", "Cough"),
     listOf("joint_pain", "Joint pain"),
-    listOf("fatigue", "Fatigue"),
     listOf("flu", "Flu"),
     listOf("headache", "Headache"),
     listOf("vomiting", "Vomiting"),

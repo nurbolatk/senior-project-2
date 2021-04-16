@@ -15,32 +15,16 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.HomeScreen
 import timber.log.Timber
 
-
-sealed class Screen(val route: String, val name: String, val icon: ImageVector) {
-    object Home : Screen("home", "Home", Icons.Filled.Home)
-    object History : Screen("history", "History", Icons.Filled.Timeline)
-}
-
-val items = listOf(
-    Screen.Home,
-    Screen.History,
-)
-
 @Composable
 fun AppWrapper(higherNavController: NavHostController, viewModel: AppViewModel = viewModel()) {
 
     val currentUser by viewModel.currentUser.observeAsState()
-    Timber.d(if(currentUser == null) "current user null" else "currentuser ${currentUser!!.email}")
-    if(currentUser == null) {
+    Timber.d(if (currentUser == null) "current user null" else "currentuser ${currentUser!!.email}")
+    if (currentUser == null) {
         higherNavController.navigate("login") {
             popUpTo("app") { inclusive = true }
         }
     }
-
-
-
-        HomeScreen(higherNavController, viewModel)
-
-
+    HomeScreen(higherNavController, viewModel)
 }
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.ApiService
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.ApiStatus
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.NewUser
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.UserCredentials
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class AppViewModel
 @Inject constructor(
     val randomString: String,
-    private val repository: AppRepository
+    private val repository: AppRepository,
+    val service: ApiService
 ): ViewModel() {
 
     val currentUser = repository.currentUser
@@ -85,6 +87,17 @@ class AppViewModel
             }
         }
     }
+
+//    fun getUsers() = liveData(Dispatchers.IO) {
+//        currentUser.value?.let {
+//            emit(Resource.loading(data = null))
+//            try {
+//                emit(Resource.success(data=service.getStatus(it.id)))
+//            }catch (exception: Exception){
+//                emit(Resource.error(data=null,message = exception.message?:"Error occured"))
+//            }
+//        }
+//    }
 
 
 }
