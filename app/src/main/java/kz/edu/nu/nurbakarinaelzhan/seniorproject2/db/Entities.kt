@@ -25,5 +25,6 @@ data class DBUser(
 data class DBPrediction(
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     @ColumnInfo(name = "created_at") var createdAt: Long? = null,
-    val value: Int
+    val value: Int,
+    val percents: Double
 )

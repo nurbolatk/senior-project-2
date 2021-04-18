@@ -33,7 +33,7 @@ fun SurveyCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
 

@@ -18,8 +18,9 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.LoginScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.auth.RegisterScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.AppWrapper
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.PredictionsScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.SurveyScreen
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.predictions.PredictionStatusScreen
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.predictions.SubmitSensorsScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.SeniorProject2Theme
 
 @Composable
@@ -50,7 +51,10 @@ fun MainNavController() {
                 AppWrapper(navController, viewModel)
             }
             composable("prediction_status") {
-                PredictionStatusScreen(navController, viewModel)
+                PredictionsScreen(viewModel)
+            }
+            composable("submit_sensors") {
+                SubmitSensorsScreen(viewModel)
             }
             composable(
                 "survey?readonly={readonly}",

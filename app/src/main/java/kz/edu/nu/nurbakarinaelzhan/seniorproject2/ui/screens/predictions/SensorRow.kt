@@ -31,7 +31,7 @@ fun SensorRow(provided: Boolean, label: String, value: String) {
                 MaterialTheme.colors.primaryVariant
         )
         Text(
-            text = "${label}${if(provided) "- $value" else ""}",
+            text = "${label}${if(provided) " - $value" else ""}",
             modifier = Modifier
                 .padding(start = 8.dp),
             color = if (provided)

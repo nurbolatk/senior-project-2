@@ -69,17 +69,23 @@ data class SymptomsPayload(
     val symptoms: Symptoms
 )
 
+data class CovidInfected(
+    val value: Int,
+    val percents: Double,
+)
+
 data class PredictionGet(
-    val value: Int
+    val covid_infected: CovidInfected
 ) {
     fun toDatabaseModel(): DBPrediction = DBPrediction(
-        value = value
+        value = covid_infected.value,
+        percents = covid_infected.percents
     )
 }
 
 data class SensorSymptom(
     val value: Int? = null,
-    val percents: Int? = null
+    val percents: Double? = null
 )
 data class PulseoximeterSensor(
     val value: Int? = null,

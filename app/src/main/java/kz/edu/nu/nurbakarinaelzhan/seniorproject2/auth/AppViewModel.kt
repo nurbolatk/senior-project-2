@@ -14,8 +14,7 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.UserCredentials
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.repository.AppRepository
 import timber.log.Timber
 import javax.inject.Inject
-
-
+import kotlin.math.roundToInt
 
 
 @HiltViewModel
@@ -84,6 +83,33 @@ class AppViewModel
         currentUser.value?.let{
             viewModelScope.launch {
                 repository.fetchStatus(it.id)
+            }
+        }
+    }
+
+    fun submitSpo2(spo2: String) {
+        currentUser.value?.let {
+            val intSpo2 = spo2.toInt()
+            viewModelScope.launch {
+                repository.submitSpo2(intSpo2, it.id)
+            }
+        }
+    }
+    fun submitTemperature(spo2: String) {
+        currentUser.value?.let {
+            val intSpo2 = spo2.toDouble()
+            val data = (intSpo2*100).roundToInt()
+            viewModelScope.launch {
+                repository.submitTemperature(data, it.id)
+            }
+        }
+    }
+    fun submitSpirometer(spo2: String) {
+        currentUser.value?.let {
+            val intSpo2 = spo2.toDouble()
+            val data = (intSpo2*100).roundToInt()
+            viewModelScope.launch {
+                repository.submitSpirometer(data, it.id)
             }
         }
     }

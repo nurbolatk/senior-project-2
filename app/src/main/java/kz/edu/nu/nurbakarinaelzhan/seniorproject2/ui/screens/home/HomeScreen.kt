@@ -15,20 +15,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
-import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.Predictions
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.predictions.HealthStatus
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.theme.DarkBlue700
 import java.util.*
 
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: AppViewModel) {
     val currentUser = viewModel.currentUser.value
-    viewModel.fetchPrediction()
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp, bottom = 16.dp),
+            .padding(top = 24.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
@@ -52,15 +50,17 @@ fun HomeScreen(navController: NavHostController, viewModel: AppViewModel) {
                 )
             }
         }
-
-        Predictions(viewModel)
-
+        HealthStatus(
+            navController = navController,
+            viewModel = viewModel,
+            modifier = Modifier.weight(1f)
+        )
         Button(
             onClick = {
                 navController.navigate("prediction_status")
             },
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+//                .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
         ) {
             Text("Check prediction".toUpperCase(Locale.ROOT), style = typography.button)

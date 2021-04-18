@@ -1,6 +1,8 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,10 +48,17 @@ fun PredictionsList(predictions: List<DBPrediction>) {
 }
 
 @Composable
-fun Predictions(viewModel: AppViewModel) {
+fun PredictionsScreen(viewModel: AppViewModel) {
+    viewModel.fetchPrediction()
+
     val predictionsState = viewModel.predictions.observeAsState()
     val predictions = predictionsState.value
-    Column(
+    val scrollState = rememberLazyListState()
+
+    Column (
+        modifier = Modifier
+            .scrollable(scrollState, Orientation.Vertical, true)
+            .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(predictions == null) {
@@ -58,11 +67,18 @@ fun Predictions(viewModel: AppViewModel) {
             if(predictions.isNotEmpty()) {
                 PredictionsList(predictions)
             } else {
+                Text("You need to provide 2 types of data to receive prediction", style = typography.h5)
+                Text(
+                    "Return to the previous screen to see what needs to be submitted",
+                    style = typography.body1,
+                    modifier = Modifier.padding(top = 6.dp)
+                )
+                Spacer(Modifier.height(64.dp))
                 Image(
                     painter = painterResource(R.drawable.ic_pixeltrue_seo_1),
                     contentDescription = null,
                 )
-                Text(text = "No predictions made yet")
+                Text(text = "No predictions made yet. Please, check if you submitted all the data and try again later")
             }
         }
         TextButton(

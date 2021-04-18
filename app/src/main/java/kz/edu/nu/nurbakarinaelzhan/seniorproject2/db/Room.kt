@@ -39,7 +39,7 @@ interface PredictionsDao {
     fun deleteAll()
 }
 
-@Database(entities = [DBUser::class, DBPrediction::class], version = 4)
+@Database(entities = [DBUser::class, DBPrediction::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun predictionsDao(): PredictionsDao

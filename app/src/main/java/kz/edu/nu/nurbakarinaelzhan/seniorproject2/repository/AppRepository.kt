@@ -107,11 +107,11 @@ class AppRepository
             try {
                 val prediction = service.getPrediction(id)
                 Timber.d("Prediction $prediction")
-                if(prediction.value != 0) {
-                    sendNotification("Prediction ready!", "You are ${prediction.value}")
+                if(prediction.covid_infected.value != 0) {
+                    sendNotification("Prediction ready!", "You are ${prediction.covid_infected.value}")
                     database.predictionsDao().insert(prediction.toDatabaseModel())
                 } else {
-                    sendNotification("Prediction not ready yet", "Please, try again later")
+                    sendNotification("Prediction not ready yet", "Please, check if you submitted all the data and try again later")
                 }
             } catch (e: Exception) {
                 Timber.e(e)
@@ -178,5 +178,51 @@ class AppRepository
             }
         }
     }
+
+    val spo2Status = MutableLiveData(ApiStatus.IDLE)
+    suspend fun submitSpo2(intSpo2: Int, id: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                spo2Status.postValue(ApiStatus.LOADING)
+                service.spo2(intSpo2, id)
+                spo2Status.postValue(ApiStatus.SUCCESS)
+            } catch (e: Exception) {
+                Timber.e(e)
+                spo2Status.postValue(ApiStatus.ERROR)
+            }
+        }
+    }
+
+
+    val temperatureStatus = MutableLiveData(ApiStatus.IDLE)
+    suspend fun submitTemperature(intTemperature: Int, id: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                temperatureStatus.postValue(ApiStatus.LOADING)
+                service.thermometer(intTemperature, id)
+                temperatureStatus.postValue(ApiStatus.SUCCESS)
+            } catch (e: Exception) {
+                Timber.e(e)
+                temperatureStatus.postValue(ApiStatus.ERROR)
+            }
+        }
+    }
+
+
+    val fev1Status = MutableLiveData(ApiStatus.IDLE)
+    suspend fun submitSpirometer(fev1: Int, id: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                fev1Status.postValue(ApiStatus.LOADING)
+                service.spirometer(fev1, id)
+                fev1Status.postValue(ApiStatus.SUCCESS)
+            } catch (e: Exception) {
+                Timber.e(e)
+                fev1Status.postValue(ApiStatus.ERROR)
+            }
+        }
+    }
+
+
 
 }
