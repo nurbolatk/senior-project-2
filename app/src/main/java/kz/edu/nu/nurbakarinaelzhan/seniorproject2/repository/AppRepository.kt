@@ -19,6 +19,7 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.MainActivity
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.MainApplication
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.R
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.db.AppDatabase
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.db.DBPrediction
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.network.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -61,7 +62,7 @@ class AppRepository
             try {
                 val receivedUser = service.register(user)
                 insertUser(receivedUser)
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 Timber.e(e)
             }
         }
@@ -100,6 +101,7 @@ class AppRepository
             }
         }
     }
+
     private val CHANNEL_ID = "222"
 
     suspend fun fetchPrediction(id: String) {
@@ -107,12 +109,12 @@ class AppRepository
             try {
                 val prediction = service.getPrediction(id)
                 Timber.d("Prediction $prediction")
-                if(prediction.covid_infected.value != 0) {
-                    sendNotification("Prediction ready!", "You are ${prediction.covid_infected.value}")
-                    database.predictionsDao().insert(prediction.toDatabaseModel())
-                } else {
-                    sendNotification("Prediction not ready yet", "Please, check if you submitted all the data and try again later")
-                }
+//                if(prediction.covid_infected.value != 0) {
+                sendNotification("Prediction ready!", "You are ${prediction.covid_infected?.value}")
+                database.predictionsDao().insert(prediction.toDatabaseModel())
+//                } else {
+//                    sendNotification("Prediction not ready yet", "Please, check if you submitted all the data and try again later")
+//                }
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -157,14 +159,17 @@ class AppRepository
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
-                getSystemService(application.applicationContext, NotificationManager::class.java) as NotificationManager
+                getSystemService(
+                    application.applicationContext,
+                    NotificationManager::class.java
+                ) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
     val statusStatus = MutableLiveData(ApiStatus.IDLE)
     val predictionStatus = MutableLiveData<PredictionStatus>(null)
-    
+
     suspend fun fetchStatus(id: String) {
         withContext(Dispatchers.IO) {
             try {
@@ -173,7 +178,7 @@ class AppRepository
                 Timber.d("aloha end status fetching")
                 Timber.d("aloha ${gotStatus}")
                 predictionStatus.postValue(gotStatus)
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 Timber.e(e)
             }
         }
@@ -223,6 +228,17 @@ class AppRepository
         }
     }
 
+    val prediction = MutableLiveData<DBPrediction>()
+
+    suspend fun getPredictionById(id: Long) {
+        withContext(Dispatchers.IO) {
+            try {
+                prediction.postValue(database.predictionsDao().get(id))
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+    }
 
 
 }

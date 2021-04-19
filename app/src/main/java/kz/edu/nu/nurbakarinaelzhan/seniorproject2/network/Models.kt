@@ -69,17 +69,70 @@ data class SymptomsPayload(
     val symptoms: Symptoms
 )
 
-data class CovidInfected(
-    val value: Int,
-    val percents: Double,
-)
-
 data class PredictionGet(
-    val covid_infected: CovidInfected
+    val covid_infected: SensorSymptom? = null,
+    val fatigue: SensorSymptom? = null,
+    val fever: SensorSymptom? = null,
+    val pneumonia: Int? = null,
+    val difficult_breathing: Int? = null,
+    val submitted: Boolean? = null,
+    val sputum: Int? = null,
+    val muscle_pain: Int? = null,
+    val sore_throat: Int? = null,
+    val cold: Int? = null,
+    val sneeze: Int? = null,
+    val reflux: Int? = null,
+    val diarrhea: Int? = null,
+    val runny_nose: Int? = null,
+    val chest_pain: Int? = null,
+    val cough: Int? = null,
+    val joint_pain: Int? = null,
+    val flu: Int? = null,
+    val headache: Int? = null,
+    val vomiting: Int? = null,
+    val loss_appetite: Int? = null,
+    val chills: Int? = null,
+    val nausea: Int? = null,
+    val physical_discomfort: Int? = null,
+    val abdominal_pain: Int? = null,
+    val _userID: String? = null,
+    val pulseoximeter: Int? = null,
+    val thermometer: Double? = null,
+    val spirometer: Double? = null,
 ) {
     fun toDatabaseModel(): DBPrediction = DBPrediction(
-        value = covid_infected.value,
-        percents = covid_infected.percents
+        covid_value = covid_infected?.value,
+        covid_percents = covid_infected?.percents,
+        fever_value = fever?.value,
+        fever_percents = fever?.percents,
+        fatigue_value = fatigue?.value,
+        fatigue_percents = fatigue?.percents,
+        pneumonia = pneumonia,
+        difficult_breathing = difficult_breathing,
+        submitted = submitted,
+        sputum = sputum,
+        muscle_pain = muscle_pain,
+        sore_throat = sore_throat,
+        cold = cold,
+        sneeze = sneeze,
+        reflux = reflux,
+        diarrhea = diarrhea,
+        runny_nose = runny_nose,
+        chest_pain = chest_pain,
+        cough = cough,
+        joint_pain = joint_pain,
+        flu = flu,
+        headache = headache,
+        vomiting = vomiting,
+        loss_appetite = loss_appetite,
+        chills = chills,
+        nausea = nausea,
+        physical_discomfort = physical_discomfort,
+        abdominal_pain = abdominal_pain,
+        _userID = _userID,
+        pulseoximeter = pulseoximeter,
+        thermometer = thermometer,
+        spirometer = spirometer
     )
 }
 

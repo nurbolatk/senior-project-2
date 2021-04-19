@@ -1,6 +1,8 @@
 package kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -15,26 +17,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.R
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.db.DBPrediction
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.components.TextButton
 import java.text.SimpleDateFormat
 
+@SuppressLint("SimpleDateFormat")
 @Composable
-fun PredictionsList(predictions: List<DBPrediction>) {
+fun PredictionsList(predictions: List<DBPrediction>, navController: NavHostController) {
     val scrollState = rememberLazyListState()
     val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
 
     LazyColumn(state = scrollState) {
-        items(predictions) { prediction->
+        items(predictions) { prediction ->
             Row(
-                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate("prediction_details/${prediction.id}")
+                    }
+                    .padding(vertical = 16.dp, horizontal = 8.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    if(prediction.value == 1)
+                    if (prediction.covid_value == 1)
                         "You got positive result"
+                    else if (prediction.covid_value == 0)
+                        "No result"
                     else
                         "You got negative result"
                 )
@@ -48,26 +60,33 @@ fun PredictionsList(predictions: List<DBPrediction>) {
 }
 
 @Composable
-fun PredictionsScreen(viewModel: AppViewModel) {
+fun PredictionsScreen(viewModel: AppViewModel, navController: NavHostController) {
     viewModel.fetchPrediction()
+    StatefulPredictionScreen(viewModel = viewModel, navController)
+}
 
+@Composable
+fun StatefulPredictionScreen(viewModel: AppViewModel, navController: NavHostController) {
     val predictionsState = viewModel.predictions.observeAsState()
     val predictions = predictionsState.value
     val scrollState = rememberLazyListState()
 
-    Column (
+    Column(
         modifier = Modifier
             .scrollable(scrollState, Orientation.Vertical, true)
             .padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if(predictions == null) {
+        if (predictions == null) {
             Text("Loading")
         } else {
-            if(predictions.isNotEmpty()) {
-                PredictionsList(predictions)
+            if (predictions.isNotEmpty()) {
+                PredictionsList(predictions, navController)
             } else {
-                Text("You need to provide 2 types of data to receive prediction", style = typography.h5)
+                Text(
+                    "You need to provide 2 types of data to receive prediction",
+                    style = typography.h5
+                )
                 Text(
                     "Return to the previous screen to see what needs to be submitted",
                     style = typography.body1,

@@ -18,6 +18,7 @@ import kz.edu.nu.nurbakarinaelzhan.seniorproject2.auth.AppViewModel
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.LoginScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.auth.RegisterScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.AppWrapper
+import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.PredictionDetailsScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.PredictionsScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.home.SurveyScreen
 import kz.edu.nu.nurbakarinaelzhan.seniorproject2.ui.screens.predictions.SubmitSensorsScreen
@@ -51,10 +52,16 @@ fun MainNavController() {
                 AppWrapper(navController, viewModel)
             }
             composable("prediction_status") {
-                PredictionsScreen(viewModel)
+                PredictionsScreen(viewModel, navController)
             }
             composable("submit_sensors") {
                 SubmitSensorsScreen(viewModel)
+            }
+            composable(
+                "prediction_details/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.LongType })
+            ) {
+                PredictionDetailsScreen(viewModel, it.arguments?.getLong("id"))
             }
             composable(
                 "survey?readonly={readonly}",

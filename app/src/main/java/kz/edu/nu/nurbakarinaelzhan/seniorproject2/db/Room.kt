@@ -37,9 +37,12 @@ interface PredictionsDao {
 
     @Query("delete from predictions")
     fun deleteAll()
+
+    @Query("select * from predictions where id = :id")
+    fun get(id: Long): DBPrediction
 }
 
-@Database(entities = [DBUser::class, DBPrediction::class], version = 5)
+@Database(entities = [DBUser::class, DBPrediction::class], version = 7)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun predictionsDao(): PredictionsDao

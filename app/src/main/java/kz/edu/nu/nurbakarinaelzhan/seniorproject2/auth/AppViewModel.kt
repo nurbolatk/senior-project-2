@@ -114,6 +114,14 @@ class AppViewModel
         }
     }
 
+    val prediction = repository.prediction
+
+    fun getPredictionById(id: Long) {
+        viewModelScope.launch {
+            repository.getPredictionById(id)
+        }
+    }
+
 //    fun getUsers() = liveData(Dispatchers.IO) {
 //        currentUser.value?.let {
 //            emit(Resource.loading(data = null))
